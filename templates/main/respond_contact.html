@@ -1,0 +1,60 @@
+{% extends "base/base.html" %}
+{% block content %}
+
+<body class="bg-[#1f242d] text-white">
+
+<section class="min-h-screen flex items-center justify-center px-4">
+  <div 
+    class="max-w-xl w-full p-8 rounded-2xl shadow-2xl 
+           bg-white/10 backdrop-blur-lg border border-white/20 
+           transform transition duration-500 hover:scale-[1.02] hover:shadow-blue-500/40 animate-fadeIn"
+  >
+    <!-- Heading -->
+    <h2 class="text-3xl font-extrabold text-amber-400 mb-6 text-center tracking-wide drop-shadow-lg">
+      Respond to {{ .name }}
+    </h2>
+
+    <!-- Message Details Glass Card -->
+    <div class="p-4 rounded-xl bg-white/5 border border-white/20 shadow-inner space-y-3 mb-6 transition duration-300 hover:shadow-lg hover:shadow-amber-400/20">
+      <p><span class="font-semibold text-blue-400">📌 Subject:</span> {{ contact.subject }}</p>
+      <p><span class="font-semibold text-blue-400">💬 Message:</span> {{ contact.message }}</p>
+    </div>
+
+    <!-- Form -->
+    <form method="post" class="space-y-4">
+      {% csrf_token %}
+      <textarea 
+        name="response" 
+        rows="5" 
+        class="w-full p-4 rounded-xl bg-gray-900/50 text-black
+               border border-white/20 focus:ring-2 focus:ring-blue-400 focus:outline-none 
+               transition duration-300 resize-none shadow-inner"
+        placeholder="Write your response here..."
+      ></textarea>
+
+      <button 
+        type="submit" 
+        class="w-full px-6 py-3 rounded-xl font-semibold text-white 
+               bg-gradient-to-r from-blue-500 to-indigo-600
+               hover:from-indigo-600 hover:to-blue-500
+               transform transition-all duration-300 hover:scale-105 shadow-lg"
+      >
+        ✉️ Send Response
+      </button>
+    </form>
+  </div>
+</section>
+</body>
+
+<!-- Fade In Animation -->
+<style>
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.8s ease-out;
+}
+</style>
+
+{% endblock %}

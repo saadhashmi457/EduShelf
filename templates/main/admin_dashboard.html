@@ -1,0 +1,116 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}<title>Admin Dashboard</title>{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        color: white;
+        margin: 0;
+        padding: 0;
+    }
+
+    .navbar {
+        background: rgba(30, 41, 59, 0.6);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        padding: 0 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .navbar h1 { font-size: 1.5rem; font-weight: bold; }
+    .navbar a { color: #f8fafc; text-decoration: none; font-weight: 500; transition: color 0.3s ease; }
+    .navbar a:hover { color: red; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-bottom: 50px; }
+    .stat-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(15px); padding: 20px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .stat-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+    .stat-card p { color: #94a3b8; font-size: 0.9rem; }
+    .stat-card h2 { font-size: 2rem; margin-top: 5px; font-weight: bold; }
+
+    .requests section { margin-bottom: 50px; padding: 30px; border-radius: 15px; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+    .requests table { width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; }
+    th, td { padding: 12px 15px; text-align: left; }
+    th { background: rgba(255,255,255,0.08); color: #e2e8f0; }
+    tr { border-bottom: 1px solid rgba(255,255,255,0.05); }
+    tr:hover { background: rgba(255,255,255,0.08); transition: background 0.3s ease; }
+
+    .btn { padding: 6px 12px; border-radius: 6px; color: white; font-size: 0.85rem; font-weight: 500; border: none; cursor: pointer; transition: transform 0.2s ease, background 0.3s ease; }
+    .btn.green { background: #22c55e; }
+    .btn.red { background: #ef4444; }
+    .btn:hover { transform: scale(1.05); opacity: 0.9; }
+</style>
+
+<body>
+<header class="navbar ">
+    <h1>⚙️ Admin Dashboard</h1>
+    <nav><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></nav>
+</header>
+
+<br><br><br><br><br>
+
+<main class="container animate-section">
+
+    <div class="text-5xl font-extrabold tracking-tight mb-6 leading-tight text-center "> 
+    <h1 classs="">📊 Admin<span class="text-amber-500 text-4xl">   Dashboard</span></h1>
+     </div>
+ <hr class="my-10 h-[2px] w-full border-0 bg-gradient-to-r from-amber-500 via-white to-amber-500 opacity-40 shadow-md transition-all duration-500 hover:opacity-80 hover:shadow-amber-500/50">
+    <!-- Stats -->
+    <section class="stats">
+        <div class="stat-card">
+            <p>Total Books</p>
+            <h2>{{ total_books }}</h2>
+        </div>
+        <div class="stat-card">
+            <p>Pending Approvals</p>
+            <h2>{{ pending_requests }}</h2>
+        </div>
+        <div class="stat-card">
+            <p>Approved Requests</p>
+            <h2>{{ approved_requests }}</h2>
+        </div>
+    </section>
+
+    <!-- Requests Table -->
+    <section class="requests  mt-32">
+        <h2 class=" text-slate-100 mb-6 font-bold text-2xl">📚 Pending Book Requests</h2>
+        {% if requests %}
+        <table>
+            <thead>
+                <tr class="text-xl">
+                    <th class="text-red-500">Book Title</th>
+                    <th class="text-red-500">Requested By</th>
+                    <th class="text-red-500">Department</th>
+                    <th class="text-red-500">Date</th>
+                    <th class="text-red-500">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in requests %}
+                <tr>
+                    <td>{{ req.book.title }}</td>
+                    <td>{{ req.requester.full_name }}</td>
+                    <td>{{ req.requester.department }}</td>
+                    <td>{{ req.created_at|date:"M d, Y" }}</td>
+                    <td>
+                        <a href="{% url 'approve_request' req.id %}" class="btn green">Approve</a>
+                        <a href="{% url 'reject_request' req.id %}" class="btn red">Reject</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p class="text-center text-gray-400 mt-4 italic">No pending requests at the moment.</p>
+        {% endif %}
+    </section>
+
+</main>
+</body>
+{% endblock %}

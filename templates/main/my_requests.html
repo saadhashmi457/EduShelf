@@ -1,0 +1,162 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}My Book Requests{% endblock %}
+
+{% block content %}
+
+<style>
+  body { background: #1f242d; color: white; font-family: 'Segoe UI', sans-serif; }
+  .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+  h2 { text-align: center; font-size: 2.5rem; color: #14b8a6; margin-bottom: 30px; }
+
+  .request-card {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(12px);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .request-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  }
+
+  .book-info { margin-bottom: 15px; }
+  .status { display: inline-block; font-weight: bold; padding: 6px 15px; border-radius: 12px; }
+  .status.pending { background-color: #fbbf24; color: #1f2937; }
+  .status.approved { background-color: #22c55e; color: white; }
+  .status.rejected { background-color: #ef4444; color: white; }
+
+  /* Uploader Card */
+  .uploader-card {
+      background: rgba(20, 184, 166, 0.1);
+      border: 1px solid #14b8a6;
+      border-radius: 15px;
+      padding: 20px;
+      margin-top: 15px;
+      display: none; /* hidden by default */
+      animation: fadeIn 0.5s ease forwards;
+  }
+  .uploader-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #14b8a6;
+  }
+  .uploader-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 15px 0;
+  }
+  .uploader-card ul li {
+      margin: 8px 0;
+      font-size: 1.1rem;
+  }
+  .uploader-card ul li span {
+      font-weight: bold;
+      color: #f9fafb;
+  }
+
+  .btn-toggle {
+      margin-top: 10px;
+      background: #2563eb;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-block;
+  }
+  .btn-toggle:hover {
+      background: #1d4ed8;
+      transform: scale(1.05);
+  }
+
+  .chat-btn, .whatsapp-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-decoration: none;
+  }
+  .chat-btn { background: #6366f1; color: white; }
+  .chat-btn:hover { background: #4f46e5; transform: scale(1.05); }
+  .whatsapp-btn { background: #25D366; color: white; }
+  .whatsapp-btn:hover { background: #128C7E; transform: scale(1.05); }
+
+  @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+<div class="container animate-section">
+
+     <h2 class=" mt-16 text-4xl font-bold tracking-wide text-white">
+      My <span class="text-amber-500">Request Book</span>
+    </h2>
+
+    {% if requests %}
+        {% for req in requests %}
+        <div class="request-card">
+            <div class="book-info">
+                <p><strong>Book:</strong> {{ req.book.title }}</p>
+                <p><strong>Requested On:</strong> {{ req.created_at|date:"M d, Y" }}</p>
+                <p>Status: 
+                  <span class="status {{ req.status }}">
+                    {% if req.status == "pending" %} ⏳ Pending
+                    {% elif req.status == "approved" %} ✅ Approved
+                    {% else %} ❌ Rejected {% endif %}
+                  </span>
+                </p>
+            </div>
+
+            {% if req.status == "approved" %}
+              <!-- Toggle Button -->
+              <button class="btn-toggle" onclick="toggleUploader('{{ req.id }}')">
+                📂 See Uploader Details
+              </button>
+
+              <!-- Hidden uploader card -->
+              <div id="uploader-{{ req.id }}" class="uploader-card">
+                  <h3>📚 Uploader Details</h3>
+                  <ul>
+                      <li><span>Name:</span> {{ req.book.uploader.full_name }}</li>
+                      <li><span>Department:</span> {{ req.book.uploader.department }}</li>
+                      <li><span>Email:</span> {{ req.book.uploader.university_email }}</li>
+                      <li><span>Roll No:</span> {{ req.book.uploader.university_roll_no }}</li>
+                      <li>
+                       <span>Whatsapp Number:</span> {{ req.book.uploader.whatsapp_number }}</li>
+                      </li>
+                  </ul>
+                  
+                  <!-- Chat button -->
+                 <a href="{% url 'chat_with_user' req.book.uploader.id %}" 
+   class="chat-btn hover:bg-blue-600 transition">
+   💬 Start Live Chat
+</a>
+
+              </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-center text-gray-400 italic mt-6">📭 You haven’t requested any books yet.</p>
+    {% endif %}
+</div>
+
+<script>
+  function toggleUploader(id) {
+      const card = document.getElementById("uploader-" + id);
+      if (card.style.display === "block") {
+          card.style.display = "none";
+      } else {
+          card.style.display = "block";
+      }
+  }
+</script>
+
+{% endblock %}

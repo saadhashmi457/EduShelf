@@ -1,0 +1,117 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}FAQs - EduShelf{% endblock title %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-gray-100 flex flex-col items-center py-16 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl w-full mb-12 mt-32">
+    <header class="mb-12 text-center">
+      <h1 class="text-5xl font-extrabold tracking-tight mb-4 text-black">Frequently Asked Questions</h1>
+      <p class="text-gray-400 max-w-xl mx-auto text-lg">
+        Clear answers to your questions about EduShelf Book Exchange System.
+      </p>
+    </header>
+
+    <div class="space-y-5">
+      <!-- FAQ Item -->
+      {% comment %} Repeat this block for each FAQ {% endcomment %}
+      <details class="group bg-gray-800 rounded-xl shadow-lg p-6 cursor-pointer" open>
+        <summary class="text-xl font-semibold text-white list-none cursor-pointer select-none">
+          How do I sign up for EduShelf?
+        </summary>
+        <p class="mt-4 text-gray-300 max-w-prose leading-relaxed select-text">
+          To sign up, visit the Signup page and enter your full name, father name, department, university email, roll number, and password. After registration, login with your university email and password.
+        </p>
+      </details>
+
+      <details class="group bg-gray-800 rounded-xl shadow-lg p-6 cursor-pointer">
+        <summary class="text-xl font-semibold text-white list-none cursor-pointer select-none">
+          Can I exchange books with other students?
+        </summary>
+        <p class="mt-4 text-gray-300 max-w-prose leading-relaxed select-text">
+          Yes! EduShelf lets you sell, exchange, or donate books. Browse listings, contact sellers, and arrange exchanges easily.
+        </p>
+      </details>
+
+      <details class="group bg-gray-800 rounded-xl shadow-lg p-6 cursor-pointer">
+        <summary class="text-xl font-semibold text-white list-none cursor-pointer select-none">
+          Is my personal information safe?
+        </summary>
+        <p class="mt-4 text-gray-300 max-w-prose leading-relaxed select-text">
+          Absolutely. EduShelf uses secure protocols and never shares your details without your consent. Please avoid sharing sensitive info publicly.
+        </p>
+      </details>
+
+      <details class="group bg-gray-800 rounded-xl shadow-lg p-6 cursor-pointer">
+        <summary class="text-xl font-semibold text-white list-none cursor-pointer select-none">
+          How can I reset my password?
+        </summary>
+        <p class="mt-4 text-gray-300 max-w-prose leading-relaxed select-text">
+          Click the “Forgot password?” link on the login page to get an email with instructions to reset your password.
+        </p>
+      </details>
+
+      <details class="group bg-gray-800 rounded-xl shadow-lg p-6 cursor-pointer">
+        <summary class="text-xl font-semibold text-white list-none cursor-pointer select-none">
+          Can I list books for free?
+        </summary>
+        <p class="mt-4 text-gray-300 max-w-prose leading-relaxed select-text">
+          Yes, you can list books as free, for sale, or exchange by choosing the category when uploading your listing.
+        </p>
+      </details>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Remove default triangle from details summary */
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::marker {
+    content: "";
+  }
+
+  /* Add subtle plus/minus icon on the right side */
+  details summary {
+    position: relative;
+    padding-right: 1.5rem;
+  }
+  details summary::after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    color: #818cf8; /* Indigo-400 */
+    transition: transform 0.3s ease, content 0.3s ease;
+  }
+  details[open] summary::after {
+    content: '−'; /* minus sign */
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  /* Smooth open animation */
+  details p {
+    animation: fadeInContent 0.35s ease forwards;
+    opacity: 0;
+  }
+  details[open] p {
+    opacity: 1;
+  }
+
+  @keyframes fadeInContent {
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+{% endblock content %}

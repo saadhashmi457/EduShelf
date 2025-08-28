@@ -1,0 +1,143 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+<title>Manage Users</title>
+{% endblock title %}
+
+{% block content %}
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        color: white;
+        margin: 0;
+        padding: 0;
+    }
+
+    .users-container {
+        padding: 40px;
+        margin: 80px auto;
+        max-width: 95%;
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 20px;
+        backdrop-filter: blur(15px);
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+        animation: fadeIn 0.7s ease-in-out;
+        /* Added stronger box shadow like contact submissions */
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(245, 158, 11, 0.3);
+    }
+
+    .users-container h2 {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #f59e0b;
+        margin-bottom: 30px;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(12px);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 14px 16px;
+        text-align: left;
+        color: white;
+        font-size: 0.95rem;
+        vertical-align: middle;
+    }
+
+    th {
+        background: rgba(255, 255, 255, 0.08);
+        color: #e2e8f0;
+        font-weight: 600;
+    }
+
+    tr {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    tr:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: scale(1.01);
+    }
+
+    .icon {
+        margin-right: 8px;
+        color: #38bdf8; /* Sky blue */
+        width: 18px;
+        display: inline-block;
+    }
+
+    .status-yes {
+        color: #22c55e; /* green */
+        font-weight: bold;
+    }
+
+    .status-no {
+        color: #ef4444; /* red */
+        font-weight: bold;
+    }
+</style>
+
+<div class="users-container text-xs">
+    <h2>👥 Registered Users</h2>
+
+    {% if all_users %}
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th><i class="icon fas fa-user"></i> Full Name</th>
+                        <th><i class="icon fas fa-building"></i> Department</th>
+                        <th><i class="icon fas fa-envelope"></i> University Email</th>
+                        <th><i class="icon fas fa-id-card"></i> Roll No</th>
+                        <th><i class="icon fas fa-user-tie"></i> Staff</th>
+                        <th><i class="icon fas fa-crown"></i> Superuser</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in all_users %}
+                    <tr>
+                        <td><i class="icon fas fa-user"></i> {{ user.full_name }}</td>
+                        <td><i class="icon fas fa-building"></i> {{ user.department }}</td>
+                        <td><i class="icon fas fa-envelope"></i> {{ user.university_email }}</td>
+                        <td><i class="icon fas fa-id-card"></i> {{ user.university_roll_no }}</td>
+                        <td class="{% if user.is_staff %}status-yes{% else %}status-no{% endif %}">
+                            {% if user.is_staff %}✔{% else %}✘{% endif %}
+                        </td>
+                        <td class="{% if user.is_superuser %}status-yes{% else %}status-no{% endif %}">
+                            {% if user.is_superuser %}✔{% else %}✘{% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p style="text-align:center; color:#94a3b8;">No users have signed up yet.</p>
+    {% endif %}
+</div>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+{% endblock content %}

@@ -1,0 +1,160 @@
+<!-- upload_book.html -->
+<!DOCTYPE html>
+ {% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Upload Book - EduShelf</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    
+<link href="{% static 'css/output.css' %}" rel="stylesheet">
+
+
+    <style>
+      body {
+        font-family: 'Poppins', sans-serif;
+      }
+
+      .glass {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 12px 40px rgba(255, 255, 255, 0.07);
+      }
+
+      .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeIn 1.2s forwards;
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      input:focus, textarea:focus, select:focus {
+        outline: none;
+        border-color: #facc15;
+        box-shadow: 0 0 0 2px #facc15;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gradient-to-br from-[#1f242d] via-[#2e3440] to-[#1f242d] text-white min-h-screen flex items-center justify-center px-4 py-10">
+
+
+
+   
+
+    <div class="w-full max-w-4xl glass rounded-2xl p-10 fade-in shadow-2xl transition-transform duration-500 hover:scale-[1.01] hover:ring hover:ring-amber-400 hover:ring-opacity-40">
+      <h2 class="text-4xl font-bold text-center text-amber-400 mb-10 tracking-wider">Upload a Book</h2>
+
+      <form method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+       {% csrf_token %}
+
+
+        <!-- title of book -->
+        <div>
+  <label for="title" class="text-sm text-gray-300">Book Title</label>
+  <input type="text" name="title" id="title" required placeholder="Book Title"
+         class="w-full mt-1 px-4 py-3 bg-white/10 border border-white/20 text-white rounded-lg" />
+</div>
+
+
+
+        <!-- Author Name -->
+        <div>
+          <label for="author" class="text-sm text-gray-300">Author Name</label>
+          <input type="text" name="author" id="author" required placeholder="Author of the book"
+            class="w-full mt-1 px-4 py-3 bg-white/10 border border-white/20 text-white rounded-lg" />
+        </div>
+
+ <!-- Language -->
+        <div>
+          <label for="language" class="text-sm text-gray-300">Language</label>
+          <input type="text" name="language" id="language" required placeholder="e.g. English"
+            class="w-full mt-1 px-4 py-3 bg-white/10 border border-white/20 text-white rounded-lg" />
+        </div>
+
+
+        <!-- Category -->
+        <div>
+          <label for="category" class="text-sm text-gray-300">Category</label>
+          <select name="category" id="category" required
+            class="w-full mt-1 px-4 py-3 bg-white/10 border border-white/20 text-white rounded-lg">
+            <option value="">Select</option>
+            <option class="text-black" value="sell">Sell</option>
+            <option class="text-black" value="exchange">Exchange</option>
+            <option class="text-black" value="free">Free</option>
+          </select>
+        </div>
+
+        
+  <!-- Book Condition -->
+        <div>
+          <label for="condition" class="text-sm text-gray-300">Condition</label>
+          <select name="condition" id="condition" required
+            class="w-full mt-1 px-4 py-3 bg-white/10 border border-white/20 text-white rounded-lg">
+            <option value="">Select</option>
+            <option class="text-black" value="new">New</option>
+            <option class="text-black" value="good">Good</option>
+            <option class="text-black" value="used">Used</option>
+            <option class="text-black" value="old">Old</option>
+          </select>
+        </div>
+
+       
+
+        
+        <!-- Genre -->
+        <div>
+          <label for="genre" class="text-sm text-gray-300">Genre</label>
+          <input type="text" name="genre" id="genre" required placeholder="e.g. Computer, medical etc"
+            class="w-full mt-1 px-4 py-3 bg-white/10 border border-white/20 text-white rounded-lg" />
+        </div>
+
+      
+        <!-- Price -->
+        <div>
+          <label for="price" class="text-sm text-gray-300">Price (only if for Sell)</label>
+          <input type="number" name="price" id="price" placeholder="Rs. ?"
+            class="w-full mt-1 px-4 py-3 bg-white/10 border border-white/20 text-white rounded-lg" />
+        </div>
+
+
+
+        <hr class="my-10 h-[2px] w-full border-0 bg-gradient-to-r from-amber-500 via-white to-amber-500 opacity-40 shadow-md transition-all duration-500 hover:opacity-80 hover:shadow-amber-500/50">
+ <hr class="my-10 h-[2px] w-full border-0 bg-gradient-to-r from-amber-500 via-white to-amber-500 opacity-40 shadow-md transition-all duration-500 hover:opacity-80 hover:shadow-amber-500/50">
+
+      
+
+        <!-- Cover Image -->
+        <div class="md:col-span-2">
+          <label for="cover_image" class="text-sm text-gray-300">Cover Image</label>
+          <input type="file" name="cover_image" id="cover_image" required
+            class="w-full mt-1 px-4 py-2 bg-white/10 border border-white/20 text-white rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-amber-400 file:text-[#1f242d] hover:file:bg-amber-500 transition duration-300" />
+        </div>
+
+        <!-- Book Description -->
+        <div class="md:col-span-2">
+          <label for="description" class="text-sm text-gray-300">Book Description</label>
+          <textarea name="description" id="description" rows="4" required placeholder="Details about the book..."
+            class="w-full mt-1 px-4 py-3 bg-white/10 border border-white/20 text-white rounded-lg resize-none"></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="md:col-span-2 flex justify-center">
+          <button type="submit"
+            class="bg-amber-400 text-[#1f242d] px-10 py-3 mt-4 rounded-full font-semibold text-lg shadow-xl hover:bg-amber-500 transform hover:scale-105 transition-all duration-300">
+            Upload Book
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

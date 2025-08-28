@@ -1,0 +1,121 @@
+    {% load static %}
+
+<nav id="main-navbar" class="from-[#1f242d] to-gray-900  fixed w-full top-1 z-40 border-b border-gray-700 transition-shadow duration-900 ">
+    
+
+
+<div class="max-w-7xl mx-auto px-6">
+  <div class="flex justify-between items-center py-4">
+
+    <!-- Logo -->
+    
+  
+<a href="{% url 'home' %}"  class="flex items-center transform transition-transform duration-300 hover:scale-105 ml-4">
+  <img src="{% static 'images/white.png' %}" alt="EduShelf Logo" class="h-10 w-auto">
+</a>
+
+
+    <!-- Desktop Menu (shifted slightly left) -->
+    <div class="hidden md:flex items-center space-x-8 font-medium mr-8">
+  <!-- Common Links -->
+  <a href="{% url 'home' %}" class="hover:text-blue-400 transition-colors duration-300 transform hover:scale-105">Home</a>
+  <a href="{% url 'browsebook' %}" class="hover:text-blue-400 transition-colors duration-300 transform hover:scale-105">Browse Books</a>
+  <a href="{% url 'about' %}" class="hover:text-blue-400 transition-colors duration-300 transform hover:scale-105">About</a>
+  <a href="{% url 'contact' %}" class="hover:text-blue-400 transition-colors duration-300 transform hover:scale-105">Contact</a>
+
+  {% if user.is_authenticated %}
+    {% if user.is_staff %}
+      <!-- Admin Links -->
+      <a href="{% url 'manage_user' %}" class="hover:text-blue-400 transition-colors duration-300 transform hover:scale-105">Manage Users</a>
+      <a href="{% url 'manage_contacter' %}" class="hover:text-blue-400 transition-colors duration-300 transform hover:scale-105">Manage Contacts</a>
+
+      <a href="{% url 'admin_dashboard' %}" 
+         class="px-2 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-600 hover:text-white transform hover:scale-105 transition">
+         Admin Dashboard
+      </a>
+    {% else %}
+      <!-- Normal User Links -->
+      <a href="{% url 'upload_book' %}" class="hover:text-blue-400 transition-colors duration-300 transform hover:scale-105">Add Book</a>
+      <a href="{% url 'my_listings' %}" class="hover:text-blue-400 transition-colors duration-300 transform hover:scale-105">My Listings</a>
+      <a href="{% url "my_requests" %}" class="hover:text-blue-400 transition-colors duration-300 transform hover:scale-105">Requests</a>
+
+      <!-- User Dashboard with notification count -->
+      <a href="{% url 'user_dashboard' %}" 
+         class="relative px-2 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-600 hover:text-white transform hover:scale-105 transition">
+         User Dashboard
+         {% if global_unread_count > 0 %}
+            <span class="absolute -top-2 -right-2 text-xs bg-red-600 text-white rounded-full px-2 py-0.5">
+                {{ global_unread_count }}
+            </span>
+         {% endif %}
+      </a>
+    {% endif %}
+  {% else %}
+    <!-- Guest User Links -->
+    <a href="{% url 'login' %}" class="hover:text-blue-400 transition-colors duration-300 transform hover:scale-105">Add Book</a>
+    <a href="{% url 'login' %}" class="hover:text-blue-400 transition-colors duration-300 transform hover:scale-105">My Listings</a>
+    <a href="{% url 'login' %}" class="hover:text-blue-400 transition-colors duration-300 transform hover:scale-105">Requests</a>
+  {% endif %}
+</div>
+
+
+          
+
+
+<!-- Mobile Toggle Button -->
+<div class="lg:hidden flex items-center">
+  <button id="navbar-toggle" class="focus:outline-none">
+    <i class="fas fa-bars text-2xl text-white"></i>
+  </button>
+</div>
+
+<!-- Mobile Dropdown Menu -->
+<div id="navbar-menu" 
+     class="hidden flex-col space-y-2 py-4 border-t border-gray-700 md:hidden font-medium 
+            bg-[#1f242d] absolute top-16 left-0 w-full z-[9999] max-h-[80vh] overflow-y-auto shadow-lg">
+
+  
+  <!-- Common Links -->
+  <a href="{% url 'home' %}" class="block px-4 py-2 text-white hover:text-blue-400 transition">Home</a>
+  <a href="{% url 'browsebook' %}" class="block px-4 py-2 text-white hover:text-blue-400 transition">Browse Books</a>
+  <a href="{% url 'about' %}" class="block px-4 py-2 text-white hover:text-blue-400 transition">About</a>
+  <a href="{% url 'contact' %}" class="block px-4 py-2 text-white hover:text-blue-400 transition">Contact</a>
+
+  {% if user.is_authenticated %}
+    {% if user.is_staff %}
+      <a href="{% url 'manage_user' %}" class="block px-4 py-2 text-white hover:text-blue-400 transition">Manage Users</a>
+      <a href="{% url 'manage_contacter' %}" class="block px-4 py-2 text-white hover:text-blue-400 transition">Manage Contacts</a>
+      <a href="{% url 'admin_dashboard' %}" class="block px-4 py-2 text-blue-600 font-semibold transition">Admin Dashboard</a>
+    {% else %}
+      <a href="{% url 'upload_book' %}" class="block px-4 py-2 text-white hover:text-blue-400 transition">Add Book</a>
+      <a href="{% url 'my_listings' %}" class="block px-4 py-2 text-white hover:text-blue-400 transition">My Listings</a>
+      <a href="{% url "my_requests" %}" class="block px-4 py-2 text-white hover:text-blue-400 transition">Requests</a>
+      <a href="{% url 'user_dashboard' %}" class="block px-4 py-2 text-blue-600 font-semibold transition">User Dashboard</a>
+    {% endif %}
+  {% else %}
+    <a href="{% url 'login' %}" class="block px-4 py-2 text-white hover:text-blue-400 transition">Add Book</a>
+    <a href="{% url 'login' %}" class="block px-4 py-2 text-white hover:text-blue-400 transition">My Listings</a>
+    <a href="{% url 'login' %}" class="block px-4 py-2 text-white hover:text-blue-400 transition">Requests</a>
+    <a href="{% url 'login' %}" class="block px-4 py-2 bg-blue-600 text-white rounded text-center hover:bg-blue-700 transition">Login</a>
+    <a href="{% url 'signup' %}" class="block px-4 py-2 border border-blue-600 text-blue-600 rounded text-center hover:bg-blue-600 hover:text-white transition">Register</a>
+  {% endif %}
+</div>
+
+
+
+
+
+
+      
+
+
+
+
+  
+
+
+</div>
+</div>
+
+  </nav>
+

@@ -1,0 +1,209 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}<title>Browsebookpage</title>{% endblock title %}
+
+{% block content %}
+<body class="bg-[#1f242d] text-white font-sans">
+
+  <!-- Header Section -->
+  <section class="py-24 bg-gradient-to-br from-[#1f242d] via-gray-800 to-gray-900 text-amber-500 animate-section ">
+    <div class="max-w-6xl mx-auto px-6 text-center space-y-8 mt-16">
+
+      
+      <h1 class="text-4xl md:text-6xl font-extrabold text-gray-800 
+           relative inline-block group transition duration-500 hover:scale-105">
+  <span class="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 
+               bg-clip-text text-transparent 
+               group-hover:from-pink-500 group-hover:via-purple-500 group-hover:to-blue-500 
+                ease-in-out transition-transform duration-500 hover:scale-105">
+    Browse All Books
+  </span>
+  <span class="absolute -bottom-1 left-0 w-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 
+               group-hover:w-full transition-all duration-700 ease-in-out rounded-full"></span>
+</h1>
+
+
+      <p class="text-gray-300 text-lg max-w-3xl mx-auto">
+        Explore a wide variety of books across genres. Whether you're looking to exchange, buy, or receive a book for free – we’ve got you covered.
+      </p>
+    </div>
+  </section>
+
+
+
+
+  <!-- Filter & Search -->
+<section class=" bg-[#f9f9f9] dark:bg-[#1f242d] relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <form method="get" 
+      class="flex flex-wrap gap-6 items-center justify-center lg:justify-between
+             backdrop-blur-xl bg-white/10 dark:bg-gray-800/20 border border-white/20 
+             rounded-2xl p-8 shadow-2xl 
+             transition-all duration-500 hover:shadow-blue-500/20 hover:scale-[1.01]">
+
+      <!-- Category -->
+      <div class="relative">
+        <select name="category"
+          class="px-6 py-3 rounded-xl 
+                 bg-white/20 dark:bg-gray-900/30 text-gray-800 dark:text-gray-200 
+                 border border-white/30 shadow-sm 
+                 backdrop-blur-md 
+                 hover:bg-white/30 dark:hover:bg-gray-800/50 
+                 focus:ring-2 focus:ring-blue-400 focus:outline-none
+                 transition-all duration-300">
+          <option class="text-black" value="all">All Categories</option>
+          <option class="text-black" value="sell" {% if request.GET.category == 'sell' %}selected{% endif %}>For Sale</option>
+          <option class="text-black" value="exchange" {% if request.GET.category == 'exchange' %}selected{% endif %}>For Exchange</option>
+          <option class="text-black" value="free" {% if request.GET.category == 'free' %}selected{% endif %}>Free Donation</option>
+        </select>
+      </div>
+
+      <!-- Condition -->
+      <div class="relative">
+        <select name="condition"
+          class="px-6 py-3 rounded-xl 
+                 bg-white/20 dark:bg-gray-900/30 text-gray-800 dark:text-gray-200 
+                 border border-white/30 shadow-sm 
+                 backdrop-blur-md 
+                 hover:bg-white/30 dark:hover:bg-gray-800/50 
+                 focus:ring-2 focus:ring-blue-400 focus:outline-none
+                 transition-all duration-300">
+          <option class="text-black" value="All">All Conditions</option>
+          <option class="text-black" value="new" {% if request.GET.condition == 'new' %}selected{% endif %}>New</option>
+          <option class="text-black" value="good" {% if request.GET.condition == 'good' %}selected{% endif %}>Good</option>
+          <option class="text-black" value="used" {% if request.GET.condition == 'used' %}selected{% endif %}>Used</option>
+          <option class="text-black" value="old" {% if request.GET.condition == 'old' %}selected{% endif %}>Old</option>
+        </select>
+      </div>
+
+      <!-- Search -->
+      <div class="flex items-center gap-4">
+        <input type="text" name="search" value="{{ request.GET.search }}" placeholder="🔍 Search books..."
+          class="px-6 py-3 w-72 md:w-80 rounded-xl 
+                 bg-white/20 dark:bg-gray-900/30 text-gray-900 dark:text-gray-200 
+                 placeholder-gray-600 dark:placeholder-gray-400 
+                 border border-white/30 shadow-sm backdrop-blur-md
+                 hover:bg-white/30 dark:hover:bg-gray-800/50 
+                 focus:ring-2 focus:ring-blue-400 focus:outline-none
+                 transition-all duration-300" />
+
+        <button type="submit"
+          class="px-8 py-3 rounded-xl 
+                 bg-gradient-to-r from-blue-500 to-purple-600 
+                 text-white font-medium shadow-lg 
+                 hover:shadow-blue-500/40 hover:scale-105 
+                 transition-all duration-300">
+          Search
+        </button>
+      </div>
+    </form>
+
+    <!-- Applied Filters (Modern Pills) -->
+    {% if request.GET.category != "all" or request.GET.condition != "All" or request.GET.search %}
+    <div class="mt-6 flex flex-wrap gap-3 items-center">
+      {% if request.GET.category and request.GET.category != "all" %}
+      <span class="px-4 py-2 bg-white/20 dark:bg-gray-800/40 backdrop-blur-lg 
+                   border border-white/30 rounded-full text-sm text-white flex items-center gap-2 
+                   shadow-sm hover:shadow-md transition">
+        Category: {{ request.GET.category|title }}
+        <a href="?{% if request.GET.condition %}condition={{ request.GET.condition }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+           class="ml-2 text-red-400 hover:text-red-500 transition">✕</a>
+      </span>
+      {% endif %}
+
+      {% if request.GET.condition and request.GET.condition != "All" %}
+      <span class="px-4 py-2 bg-white/20 dark:bg-gray-800/40 backdrop-blur-lg 
+                   border border-white/30 rounded-full text-sm text-white flex items-center gap-2 
+                   shadow-sm hover:shadow-md transition">
+        Condition: {{ request.GET.condition|title }}
+        <a href="?{% if request.GET.category %}category={{ request.GET.category }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+           class="ml-2 text-red-400 hover:text-red-500 transition">✕</a>
+      </span>
+      {% endif %}
+
+      {% if request.GET.search %}
+      <span class="px-4 py-2 bg-white/20 dark:bg-gray-800/40 backdrop-blur-lg 
+                   border border-white/30 rounded-full text-sm text-white flex items-center gap-2 
+                   shadow-sm hover:shadow-md transition">
+        Search: "{{ request.GET.search }}"
+        <a href="?{% if request.GET.category %}category={{ request.GET.category }}{% endif %}{% if request.GET.condition %}&condition={{ request.GET.condition }}{% endif %}"
+           class="ml-2 text-red-400 hover:text-red-500 transition">✕</a>
+      </span>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+
+
+
+  <!-- Books Grid -->
+  <section class="py-16 bg-[#1f242d] text-white">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+      {% for book in books %}
+        <a href="{% url 'book_detail' book.pk %}" class="block">
+          <div class="bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+            {% if book.cover_image %}
+              <img src="{{ book.cover_image.url }}" class="w-full h-52 object-cover">
+            {% else %}
+              <img src="{% static 'images/default-book.jpg' %}" class="w-full h-52 object-cover">
+            {% endif %}
+            <div class="p-5">
+              <!-- Title & Author -->
+              <h3 class="text-xl font-semibold mb-1 ">{{ book.title }}</h3>
+              <p class="text-sm text-gray-300 mb-2 ">by {{ book.author }}</p>
+
+              <!-- Extra Details -->
+              <p class="text-sm text-teal-300 text-center">Genre: {{ book.genre }}</p>
+              <p class="text-sm text-teal-300 text-center">Language: {{ book.language }}</p>
+              <p class="text-sm text-teal-300 text-center">Condition: {{ book.get_condition_display }}</p>
+              {% if book.category == "sell" and book.price %}
+                <p class="text-sm text-yellow-400 font-bold mt-1">Price: ${{ book.price }}</p>
+              {% endif %}
+
+              <!-- Category & Uploader -->
+              <div class="flex justify-between items-center mt-4">
+                <span class="px-3 py-1 
+                  {% if book.category == 'sell' %}bg-yellow-500
+                  {% elif book.category == 'exchange' %}bg-blue-600
+                  {% elif book.category == 'free' %}bg-green-600
+                  {% elif book.category == 'buy' %}bg-purple-600
+                  {% else %}bg-gray-500{% endif %}
+                  rounded-full text-xs">
+                  {{ book.get_category_display }}
+                </span>
+                <span class="text-xs text-gray-400">
+                  <i class="fas fa-user mr-1"></i>{{ book.uploader.username }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </a>
+      {% empty %}
+        <p class="col-span-3 text-center text-gray-400">No books found.</p>
+      {% endfor %}
+    </div>
+
+    <!-- 🔥 Pagination -->
+    {% if books.has_other_pages %}
+    <div class="flex justify-center mt-10 space-x-2">
+      {% if books.has_previous %}
+        <a href="?page={{ books.previous_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.condition %}&condition={{ request.GET.condition }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+           class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg">Previous</a>
+      {% endif %}
+
+      <span class="px-4 py-2 bg-blue-600 rounded-lg">
+        Page {{ books.number }} of {{ books.paginator.num_pages }}
+      </span>
+
+      {% if books.has_next %}
+        <a href="?page={{ books.next_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.condition %}&condition={{ request.GET.condition }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+           class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg">Next</a>
+      {% endif %}
+    </div>
+    {% endif %}
+  </section>
+</body>
+{% endblock content %}

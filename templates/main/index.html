@@ -1,0 +1,674 @@
+
+
+{% extends "base/base.html" %}
+
+{% load static %}
+
+{% block title %}<title>Homepage</title>{% endblock title %}
+
+
+{% block content %}
+<body class="bg-[#1f242d] text-white">
+
+  <!-- Top Header Section -->
+  <!-- <div class="bg-[#1b1b1c] text-gray-100 text-sm fixed top-0 left-0 w-full z-50 border-b border-gray-700"> -->
+   <div class="bg-[#1b1b1c] text-gray-100 text-sm w-full z-50 border-b border-gray-700">
+
+  <div class="max-w-7xl mx-auto px-6 py-3 flex flex-col md:flex-row md:justify-between md:items-center space-y-3 md:space-y-0">
+    
+    <!-- Social Icons -->
+<div class="flex justify-center md:justify-start space-x-6">
+    <!-- Facebook -->
+    <a href="https://www.facebook.com/hashmi.saad.56" target="_blank" class="hover:text-blue-500">
+        <i class="fab fa-facebook-f"></i>
+    </a>
+
+{% comment %} https://www.facebook.com/share/1Hh56gQtbR/ {% endcomment %}
+    <!-- WhatsApp (opens chat link) -->
+    <a href="https://wa.me/923116412711" target="_blank" class="hover:text-green-500">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/saad.iii143" target="_blank" class="hover:text-pink-500">
+        <i class="fab fa-instagram"></i>
+    </a>
+
+   
+</div>
+
+
+    <!-- Contact + Auth Links -->
+    <div class="flex flex-col md:flex-row md:items-center md:space-x-10 space-y-3 md:space-y-0 text-center md:text-left">
+      
+      <!-- Phone -->
+      <div class="flex justify-center items-center space-x-3">
+        <i class="fas fa-phone text-blue-400"></i>
+        <a href="tel: +923116412711" class="hover:text-blue-400"><span>+92 311 6412711</span></a>
+      </div>
+      
+      <!-- Email -->
+      <div class="flex justify-center items-center space-x-3">
+        <i class="fas fa-envelope text-blue-400"></i>
+        <a href="mailto: hashmisaad487@gmail.com" class="hover:text-blue-400"><span>hashmisaad487@gmail.com</span></a>
+      </div>
+
+      <!-- Inbox Button -->
+     <div class="relative flex justify-center items-center space-x-3">
+    <i class="fas fa-inbox text-yellow-400"></i>
+    <a href="{% url 'inbox' %}" 
+       class="font-semibold text-yellow-400 hover:text-blue-400 transition transform hover:scale-105">
+      Inbox
+    </a>
+
+    {% if global_unread_messages > 0 %}
+      <span class="absolute -top-2 -right-2 text-xs bg-red-600 text-white rounded-full px-2 py-0.5">
+          {{ global_unread_messages }}
+      </span>
+    {% endif %}
+</div>
+
+
+
+
+
+      
+
+      <!-- Auth (Login / Logout) -->
+      <div class="flex justify-center items-center space-x-6 pl-8">
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'logout' %}" class="font-semibold text-lime-500 hover:text-blue-400 transition transform hover:scale-[1.02]">
+            <i class="fas fa-sign-out-alt ml-6 text-red-500"> Logout</i>
+          </a>
+        {% else %}
+          <a href="{% url 'login' %}" class="font-semibold text-lime-500 hover:text-blue-400 transition transform hover:scale-[1.02]">
+            <i class="fas fa-user-alt ml-6 text-green-500"> Login</i>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Main Navbar -->
+  
+
+
+
+
+
+
+  <!-- main start from hereeeeeeeeeee -->
+
+  
+
+  <!-- 1.......................... HERO SECTION -->
+
+<section class="bg-gradient-to-b from-[#1f242d] to-gray-900 animate-section">
+  <div class="max-w-7xl mx-auto px-6 min-h-[100vh] flex flex-col md:flex-row items-center justify-between">
+
+    <!-- Left Content -->
+    <div class="flex-1 text-center md:text-left">
+      <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-6 transition-transform duration-500 hover:scale-105">
+        Welcome to <span class="text-blue-500">Book Exchange</span>
+      </h1>
+      <p class="text-lg text-gray-300 mb-8 max-w-xl">
+        A smart platform to share, request, and exchange books easily with people around you.
+      </p>
+
+      <!-- Search Form -->
+     <form method="GET" action="{% url 'browsebook' %}" class="flex justify-center md:justify-start mb-8">
+  <div class="flex w-full max-w-xl bg-gray-800 rounded-full overflow-hidden shadow-md">
+    <!-- Category Dropdown -->
+    <div class="relative">
+      <select name="category"
+        class="px-6 py-3 rounded-xl 
+               bg-white/20 dark:bg-gray-900/30 text-gray-800 dark:text-gray-200 
+               border border-white/30 shadow-sm 
+               backdrop-blur-md 
+               hover:bg-white/30 dark:hover:bg-gray-800/50 
+               focus:ring-2 focus:ring-blue-400 focus:outline-none
+               transition-all duration-300">
+        <option class="text-black" value="all">All Categories</option>
+        <option class="text-black" value="sell" {% if request.GET.category == 'sell' %}selected{% endif %}>For Sale</option>
+        <option class="text-black" value="exchange" {% if request.GET.category == 'exchange' %}selected{% endif %}>For Exchange</option>
+        <option class="text-black" value="free" {% if request.GET.category == 'free' %}selected{% endif %}>Free Donation</option>
+      </select>
+    </div>
+
+    <!-- Search Input -->
+    <input 
+      type="text" 
+      name="search"  value="{{ request.GET.search }}" 
+      placeholder="Search books by title or author..." 
+      class="flex-grow px-4 py-3 bg-gray-800 text-white placeholder-gray-400 focus:outline-none"
+    />
+
+    <!-- Search Button -->
+    <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-6 text-white transition">
+      <i class="fas fa-search"></i>
+    </button>
+  </div>
+</form>
+
+
+      <!-- Buttons -->
+      <div class="flex justify-center md:justify-start gap-6">
+        <a href="{% url "browsebook" %}" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-lg transform hover:scale-110 transition duration-300">Browse Books</a>
+        <a href="{% url "upload_book" %}" class="bg-transparent border border-blue-500 hover:bg-blue-600 hover:text-white px-6 py-3 rounded-lg transform hover:scale-110 transition duration-300">Post a Book</a>
+      </div>
+    </div>
+
+    <!-- Right Side Image with Continuous Animation -->
+    <div class="flex-1 mt-10 md:mt-0 hidden md:flex justify-center">
+      <img 
+        src="{% static "images/first.jpg" %}" 
+        alt="Books" 
+        class="rounded-lg shadow-lg animate-floating max-w-lg"
+      />
+    </div>
+  </div>
+</section>
+
+
+  <!--2.................................. FEATURES SECTION -->
+
+  <section class="py-20 bg-[#1f242d] animate-section">
+    <div class="max-w-6xl mx-auto px-6 text-center min-h-[80vh]">
+      <h2 class="text-3xl font-bold mb-10">Key Features</h2>
+      <div class="grid md:grid-cols-4 gap-8">
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg transform hover:scale-110 transition duration-500 hover:shadow-2xl">
+          <i class="fas fa-book-open text-blue-500 text-4xl mb-4"></i>
+          <h3 class="font-semibold mb-2">Post Books</h3>
+          <p class="text-gray-400">Easily list your books for exchange with a simple form.</p>
+        </div>
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg transform hover:scale-110 transition duration-500 hover:shadow-2xl">
+          <i class="fas fa-exchange-alt text-green-500 text-4xl mb-4"></i>
+          <h3 class="font-semibold mb-2">Request Books</h3>
+          <p class="text-gray-400">Find and request the books you want from other users.</p>
+        </div>
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg transform hover:scale-110 transition duration-500 hover:shadow-2xl">
+          <i class="fas fa-users text-yellow-500 text-4xl mb-4"></i>
+          <h3 class="font-semibold mb-2">Community</h3>
+          <p class="text-gray-400">Join a growing network of book lovers and readers.</p>
+        </div>
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg transform hover:scale-110 transition duration-500 hover:shadow-2xl">
+          <i class="fas fa-shield-alt text-red-500 text-4xl mb-4"></i>
+          <h3 class="font-semibold mb-2">Secure Exchange</h3>
+          <p class="text-gray-400">Admin-approved listings ensure safe transactions.</p>
+        </div>
+
+
+
+ <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:scale-105 hover:shadow-2xl transform transition duration-500">
+        <i class="fas fa-user-plus text-cyan-300 text-4xl mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">User Accounts</h3>
+        <p class="text-gray-400">
+          Secure login and registration system with easy account management.
+        </p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:scale-105 hover:shadow-2xl transform transition duration-500">
+        <i class="fas fa-book text-amber-500 text-4xl mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Book Listings</h3>
+        <p class="text-gray-400">
+          Post books for sale, exchange, or donation with detailed information.
+        </p>
+      </div>
+
+      <!-- Feature 3
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:scale-105 hover:shadow-2xl transform transition duration-500">
+        <i class="fas fa-search text-yellow-500 text-4xl mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Advanced Search</h3>
+        <p class="text-gray-400">
+          Quickly find books by title, author, or category with smart filters.
+        </p>
+      </div>
+
+      << Feature 4 -->
+      <!-- <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:scale-105 hover:shadow-2xl transform transition duration-500">
+        <i class="fas fa-bell text-red-500 text-4xl mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Notifications</h3>
+        <p class="text-gray-400">
+          Get instant notifications when someone requests or approves your book.
+        </p>
+      </div> --> 
+
+      <!-- Feature 5 -->
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:scale-105 hover:shadow-2xl transform transition duration-500">
+        <i class="fas fa-lock text-purple-500 text-4xl mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Secure Transactions</h3>
+        <p class="text-gray-400">
+          Admin-approved listings and verified users for safe book exchanges.
+        </p>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg hover:scale-105 hover:shadow-2xl transform transition duration-500">
+        <i class="fas fa-chart-line text-pink-500 text-4xl mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2">Analytics</h3>
+        <p class="text-gray-400">
+          Track your listings, requests, and exchanges through your dashboard.
+        </p>
+      </div>
+
+
+
+      </div>
+    </div>
+  </section>
+
+
+
+<hr class="my-12 border-0 h-[2px] bg-gradient-to-r from-transparent via-blue-500 to-transparent">
+  
+
+
+<hr class="my-12 border-0 h-[2px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-pulse">
+
+
+
+  <!--3................................. HOW IT WORKS -->
+  
+ <section class="relative py-24 bg-gradient-to-b from-[#1f242d] to-gray-900 animate-section">
+  <!-- Optional subtle background pattern -->
+  <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/asfalt-light.png')] opacity-10"></div>
+
+  <div class="relative max-w-6xl mx-auto px-6 text-center">
+    <!-- Section Heading -->
+    <h2 class="text-4xl font-extrabold mb-16 relative inline-block">
+      How It Works
+      <span class="block w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto mt-3 rounded-full"></span>
+    </h2>
+
+    <!-- Steps Grid -->
+    <div class="grid md:grid-cols-4 gap-10">
+      
+      <!-- Step 1 -->
+      <div class="relative bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-lg transform hover:-translate-y-3 hover:shadow-2xl transition-all duration-500">
+        <span class="absolute -top-4 -left-4 bg-blue-600 text-white w-10 h-10 flex items-center justify-center rounded-full font-bold shadow-md">1</span>
+        <i class="fas fa-user-plus text-blue-400 text-5xl mb-6"></i>
+        <h3 class="text-xl font-semibold mb-3">Sign Up</h3>
+        <p class="text-gray-300 text-sm">Create your free account to start listing or requesting books.</p>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="relative bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-lg transform hover:-translate-y-3 hover:shadow-2xl transition-all duration-500">
+        <span class="absolute -top-4 -left-4 bg-green-600 text-white w-10 h-10 flex items-center justify-center rounded-full font-bold shadow-md">2</span>
+        <i class="fas fa-book-medical text-green-400 text-5xl mb-6"></i>
+        <h3 class="text-xl font-semibold mb-3">Post a Book</h3>
+        <p class="text-gray-300 text-sm">List books you want to sell, exchange, or donate in just a few clicks.</p>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="relative bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-lg transform hover:-translate-y-3 hover:shadow-2xl transition-all duration-500">
+        <span class="absolute -top-4 -left-4 bg-yellow-500 text-white w-10 h-10 flex items-center justify-center rounded-full font-bold shadow-md">3</span>
+        <i class="fas fa-bell text-yellow-400 text-5xl mb-6"></i>
+        <h3 class="text-xl font-semibold mb-3">Receive Requests</h3>
+        <p class="text-gray-300 text-sm">Get notified when someone wants your book or offers an exchange.</p>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="relative bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-lg transform hover:-translate-y-3 hover:shadow-2xl transition-all duration-500">
+        <span class="absolute -top-4 -left-4 bg-red-600 text-white w-10 h-10 flex items-center justify-center rounded-full font-bold shadow-md">4</span>
+        <i class="fas fa-check-circle text-red-400 text-5xl mb-6"></i>
+        <h3 class="text-xl font-semibold mb-3">Approve & Exchange</h3>
+        <p class="text-gray-300 text-sm">Finalize the exchange and enjoy your next great read hassle-free.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+  <!-- POPULAR CATEGORIES -->
+  <section class="relative py-24 bg-gradient-to-b from-gray-900 to-[#1f242d] animate-floating">
+  <div class="max-w-6xl mx-auto px-6 text-center">
+
+    <!-- Section Title -->
+    <h2 class="text-4xl font-extrabold mb-16 relative inline-block">
+      Popular Categories
+      <span class="block w-32 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto mt-3 rounded-full"></span>
+    </h2>
+
+    <!-- Categories Grid -->
+    <div class="grid md:grid-cols-3 gap-10 animate-section">
+      
+      <!-- Medical -->
+      <div class="group relative rounded-2xl overflow-hidden shadow-lg bg-gray-800 transform hover:-translate-y-3 transition-all duration-500">
+        <img src="{% static 'images/medical.jpg' %}" alt="Medical" class="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+        <div class="absolute bottom-6 left-6 text-left">
+          <h3 class="text-2xl font-bold text-white">Medical</h3>
+        </div>
+        <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transform -translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+          <i class="fas fa-stethoscope text-blue-400 text-2xl"></i>
+        </div>
+      </div>
+
+      <!-- Law & Tech -->
+      <div class="group relative rounded-2xl overflow-hidden shadow-lg bg-gray-800 transform hover:-translate-y-3 transition-all duration-500">
+        <img src="{% static 'images/law.avif' %}" alt="Law & Tech" class="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+        <div class="absolute bottom-6 left-6 text-left">
+          <h3 class="text-2xl font-bold text-white">Law & Tech</h3>
+        </div>
+        <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transform -translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+          <i class="fas fa-balance-scale text-green-400 text-2xl"></i>
+        </div>
+      </div>
+
+      <!-- Business -->
+      <div class="group relative rounded-2xl overflow-hidden shadow-lg bg-gray-800 transform hover:-translate-y-3 transition-all duration-500">
+        <img src="{% static 'images/business.avif' %}" alt="Business" class="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+        <div class="absolute bottom-6 left-6 text-left">
+          <h3 class="text-2xl font-bold text-white">Business</h3>
+        </div>
+        <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transform -translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+          <i class="fas fa-briefcase text-yellow-400 text-2xl"></i>
+        </div>
+      </div>
+
+      <!-- Mathematical -->
+      <div class="group relative rounded-2xl overflow-hidden shadow-lg bg-gray-800 transform hover:-translate-y-3 transition-all duration-500">
+        <img src="{% static 'images/math.avif' %}" alt="Mathematical" class="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+        <div class="absolute bottom-6 left-6 text-left">
+          <h3 class="text-2xl font-bold text-white">Mathematical</h3>
+        </div>
+        <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transform -translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+          <i class="fas fa-square-root-alt text-pink-400 text-2xl"></i>
+        </div>
+      </div>
+
+      <!-- Computer -->
+      <div class="group relative rounded-2xl overflow-hidden shadow-lg bg-gray-800 transform hover:-translate-y-3 transition-all duration-500">
+        <img src="{% static 'images/computer.jpg' %}" alt="Computer" class="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+        <div class="absolute bottom-6 left-6 text-left">
+          <h3 class="text-2xl font-bold text-white">Computer</h3>
+        </div>
+        <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transform -translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+          <i class="fas fa-laptop-code text-purple-400 text-2xl"></i>
+        </div>
+      </div>
+
+      <!-- Others -->
+      <div class="group relative rounded-2xl overflow-hidden shadow-lg bg-gray-800 transform hover:-translate-y-3 transition-all duration-500">
+        <img src="{% static 'images/others.avif' %}" alt="Others" class="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+        <div class="absolute bottom-6 left-6 text-left">
+          <h3 class="text-2xl font-bold text-white">Others</h3>
+        </div>
+        <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transform -translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+          <i class="fas fa-layer-group text-red-400 text-2xl"></i>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+  <!-- SECTION: Sell, Buy, Exchange, Free Books -->
+<section class="py-20 bg-gray-900 animate-section">
+  <div class="max-w-6xl mx-auto px-6 text-center min-h-[72vh]">
+    <h2 class="text-3xl font-bold mb-12">What Can You Do Here?</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+
+      <!-- Sell/Buy Books -->
+      <div class="bg-gray-800 p-8 rounded-lg shadow-lg transform  hover:shadow-2xl transition duration-500 hover:scale-105 hover:shadow-yellow-500/40">
+        <div class="mb-4">
+          <i class="fas fa-shopping-cart text-blue-500 text-5xl"></i>
+        </div>
+        <h3 class="text-2xl font-semibold mb-4">Sell & Buy Books</h3>
+        <p class="text-gray-400 mb-6">
+          Easily sell your old books and buy pre-owned ones at affordable prices. Reach a wide audience of book lovers quickly.
+        </p>
+        <a href="{% url "browsebook" %}" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow-md transition duration-300">Start Now</a>
+      </div>
+
+      <!-- Exchange Books -->
+      <div class="bg-gray-800 p-8 rounded-lg shadow-lg transform hover:scale-105 hover:shadow-2xl transition duration-500  hover:shadow-yellow-500/40">
+        <div class="mb-4">
+          <i class="fas fa-exchange-alt text-green-500 text-5xl"></i>
+        </div>
+        <h3 class="text-2xl font-semibold mb-4">Exchange Books</h3>
+        <p class="text-gray-400 mb-6">
+          Exchange your books with others in a hassle-free way. Save money and get new reads without spending a penny.
+        </p>
+        <a href="{% url "browsebook" %}" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg shadow-md transition duration-300">Exchange Now</a>
+      </div>
+
+      <!-- Free Books -->
+      <div class="bg-gray-800 p-8 rounded-lg shadow-lg transform hover:scale-105 hover:shadow-2xl transition duration-500  hover:shadow-yellow-500/40">
+        <div class="mb-4">
+          <i class="fas fa-gift text-yellow-500 text-5xl"></i>
+        </div>
+        <h3 class="text-2xl font-semibold mb-4">Get Free Books</h3>
+        <p class="text-gray-400 mb-6">
+          Access a collection of free books shared by the community. Give back by sharing books you no longer need.
+        </p>
+        <a href="{% url "browsebook" %}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-lg shadow-md transition duration-300">Find Free Books</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+  
+  <!-- CALL TO ACTION -->
+ <section class="relative py-24 bg-gradient-to-r from-slate-800 to-slate-400 text-white text-center md:text-left animate-section">
+  <!-- Overlay pattern -->
+  <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/asfalt-light.png')] opacity-10"></div>
+
+  <div class="relative max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
+    
+    <!-- Left Content -->
+    <div class="md:w-1/2 mb-10 md:mb-0">
+      <h2 class="text-4xl font-extrabold mb-4">Join Our Book Exchange Community</h2>
+      <p class="text-lg text-blue-100 mb-8">
+        Connect with thousands of book enthusiasts, sell or donate your old books, discover rare finds, and enjoy a smart, seamless exchange experience.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
+        <a href="{% url "signup" %}"
+           class="px-8 py-3 rounded-lg font-semibold bg-white text-slate-900 shadow-lg hover:shadow-xl hover:scale-105 hover:bg-gray-100 transition-all duration-300">
+          Get Started
+        </a>
+        <a href="{% url "about" %}"
+           class="px-8 py-3 rounded-lg font-semibold border border-white hover:bg-white hover:text-slate-900 hover:scale-105 transition-all duration-300">
+          Learn More
+        </a>
+      </div>
+    </div>
+
+    <!-- Right Image -->
+    <div class="md:w-1/2 flex justify-center">
+      <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80"
+           alt="Book Exchange"
+           class="rounded-2xl shadow-2xl animate-floating max-w-md w-full" />
+    </div>
+  </div>
+</section>
+
+
+
+<!-- thisis booksby catagory section -->
+
+
+<!-- Marketplace Section -->
+<section id="marketplace" class="py-20 bg-white dark:bg-[#1f242d] animate-section">
+  <div class="container mx-auto px-6 lg:px-8">
+    
+    <!-- Section Header -->
+    <div class="text-center mb-12 animate-fade-in-up">
+      <h2 class="text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+        Explore the <span class="text-blue-500">Marketplace</span>
+      </h2>
+      <p class="text-lg text-gray-600 dark:text-gray-300 max-w-xl mx-auto">
+        Discover a wide variety of books available for selling, exchanging, or free.
+      </p>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="flex flex-wrap justify-center gap-4 mb-10 animate-fade-in-up">
+      <button data-filter="all" class="filter-btn bg-blue-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-blue-700 transition">All Books</button>
+      <button data-filter="free" class="filter-btn bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white px-6 py-2 rounded-full font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition">Free Books</button>
+      <button data-filter="exchange" class="filter-btn bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white px-6 py-2 rounded-full font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition">Exchange</button>
+      <button data-filter="sell" class="filter-btn bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white px-6 py-2 rounded-full font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition">Buy</button>
+    </div>
+
+    <!-- 🔥 Books Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="book-list">
+      {% for book in books %}
+      <div class="book-card {{ book.category }} bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition duration-300">
+        
+        <!-- Cover Image -->
+        {% if book.cover_image %}
+          <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="w-full h-48 object-cover">
+        {% else %}
+          <img src="{% static 'images/default-book.jpg' %}" alt="Default Book" class="w-full h-48 object-cover">
+        {% endif %}
+
+        <div class="p-5">
+          <!-- Category Badge -->
+          <span class="
+            {% if book.category == 'sell' %} bg-blue-100 text-blue-700
+            {% elif book.category == 'exchange' %} bg-green-100 text-green-700
+            {% elif book.category == 'free' %} bg-yellow-100 text-yellow-700
+            {% else %} bg-gray-200 text-gray-700 {% endif %}
+            text-xs px-3 py-1 rounded-full inline-block mb-2">
+            {{ book.get_category_display }}{% if book.category == "sell" and book.price %} - ${{ book.price }}{% endif %}
+          </span>
+
+          <!-- Title -->
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-1">{{ book.title }}</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-300 mb-3">by {{ book.author }}</p>
+
+          <!-- Uploader & Action -->
+          <div class="flex justify-between items-center">
+            <span class="text-sm text-gray-600 dark:text-gray-400">
+              <i class="fas fa-user mr-1"></i>{{ book.uploader.username }}
+            </span>
+            
+            <!-- Action Button -->
+            {% if book.category == "sell" %}
+              <a href="{% url 'book_detail' book.pk %}" class="text-sm px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Buy Now</a>
+            {% elif book.category == "exchange" %}
+              <a href="{% url 'book_detail' book.pk %}" class="text-sm px-4 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition">Request</a>
+            {% elif book.category == "free" %}
+              <a href="{% url 'book_detail' book.pk %}" class="text-sm px-4 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition">Claim</a>
+            {% else %}
+              <a href="{% url 'book_detail' book.pk %}" class="text-sm px-4 py-1 bg-gray-600 text-white rounded hover:bg-gray-700 transition">View</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% empty %}
+        <p class="col-span-4 text-center text-gray-400">No books available right now.</p>
+      {% endfor %}
+    </div>
+
+    <!-- View More Button -->
+    <div class="text-center mt-12 animate-fade-in-up">
+      <a href="{% url 'browsebook' %}" class="px-8 py-3 bg-blue-600 text-white rounded-full font-semibold shadow hover:bg-blue-700 transition">
+        Explore All Books
+      </a>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+<!-- this is upperpage from footer -->
+
+
+<section class="relative py-24 lg:py-32 bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 text-white overflow-hidden animate-section">
+  <!-- Decorative Glow Background -->
+  <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/black-linen.png')]"></div>
+
+  <div class="relative container mx-auto px-4 lg:px-8">
+    <div class="text-center max-w-4xl mx-auto animate-section">
+      <!-- Highlight Tag -->
+      <div class="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-6 shadow-md animate-fade-in">
+        <i class="fa-solid fa-rocket text-yellow-400 mr-2"></i>
+        Ready to Start?
+      </div>
+
+      <!-- Heading -->
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+        Join <span class="text-blue-400">EduShelf</span> Today &
+        <span class="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-400 animate-pulse">
+          Start Your Journey
+        </span>
+      </h2>
+
+      <!-- Subtext -->
+      <p class="text-lg lg:text-2xl text-gray-300 mb-12 max-w-2xl mx-auto">
+        Become a part of the largest book exchange community. 
+        <span class="font-semibold text-white">It’s free to join</span> and takes less than 2 minutes to get started.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+        <a href="{% url "signup" %}"
+          class="px-8 py-4 bg-white text-gray-900 font-semibold rounded-xl shadow-md hover:shadow-xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-300">
+          <i class="fa-solid fa-user-plus mr-2"></i> Create Free Account
+        </a>
+        <a href="browsebook"
+          class="px-8 py-4 border-2 border-white text-white font-semibold rounded-xl hover:bg-white hover:text-gray-900 transform hover:scale-105 transition-all duration-300">
+          <i class="fa-solid fa-book-open mr-2"></i> Browse Books First
+        </a>
+      </div>
+
+      <!-- Contact Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <!-- Email -->
+        <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-sm shadow-lg text-center transform hover:scale-105 transition duration-300">
+          <div class="w-16 h-16 flex items-center justify-center bg-white/20 rounded-xl mx-auto mb-4">
+            <i class="fa-solid fa-envelope text-white text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Email Support</h3>
+          <p class="text-gray-300">qaisazeem25@gmail.com</p>
+           <p class="text-gray-300">hashmisaad487@gmail.com</p>
+        </div>
+
+        <!-- Phone -->
+        <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-sm shadow-lg text-center transform hover:scale-105 transition duration-300">
+          <div class="w-16 h-16 flex items-center justify-center bg-white/20 rounded-xl mx-auto mb-4">
+            <i class="fa-solid fa-phone text-white text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Phone Support</h3>
+          <p class="text-gray-300">0343 0202318</p>
+          <p class="text-gray-300">0311 6412711</p>
+        </div>
+
+        <!-- Time -->
+        <div class="bg-white/10 p-6 rounded-2xl backdrop-blur-sm shadow-lg text-center transform hover:scale-105 transition duration-300">
+          <div class="w-16 h-16 flex items-center justify-center bg-white/20 rounded-xl mx-auto mb-4">
+            <i class="fa-solid fa-clock text-white text-2xl"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Support Hours</h3>
+          <p class="text-gray-300">24/7 Customer Service</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  <!-- FOOTER -->
+
+
+</body>
+{% endblock content %}
+

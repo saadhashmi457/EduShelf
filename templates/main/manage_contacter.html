@@ -1,0 +1,203 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+<title>Manage User - Contact Submissions</title>
+{% endblock title %}
+
+{% block content %}
+
+<!-- Import icons (Font Awesome) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        color: white;
+        margin: 0;
+        padding: 0;
+    }
+
+    .fade-in {
+        animation: fadeIn 0.8s ease-in-out forwards;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .contact-submissions {
+        padding: 40px;
+        margin: 112px auto 40px auto;
+        max-width: 95%;
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    .contact-submissions h2 {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 25px;
+        background: linear-gradient(90deg, #fbbf24, #f59e0b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: pulseText 2s infinite;
+    }
+
+    @keyframes pulseText {
+        0%, 100% { text-shadow: 0 0 5px rgba(255, 215, 0, 0.4); }
+        50% { text-shadow: 0 0 15px rgba(255, 215, 0, 0.7); }
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 15px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    thead tr {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    th, td {
+        padding: 14px 16px;
+        text-align: left;
+    }
+
+    th {
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        color: #e2e8f0;
+    }
+
+    tr {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    tbody tr:hover {
+        background: rgba(59, 130, 246, 0.15);
+        transform: scale(1.01);
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: capitalize;
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: white;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .icon-text {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .icon-text i {
+        color: #fbbf24;
+    }
+
+    .empty-msg {
+        text-align: center;
+        padding: 20px;
+        color: #94a3b8;
+    }
+
+    @media (max-width: 768px) {
+        table, thead, tbody, th, td, tr {
+            display: block;
+            width: 100%;
+        }
+
+        thead { display: none; }
+
+        tr {
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        td {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+        }
+
+        td::before {
+            content: attr(data-label);
+            font-weight: bold;
+            color: #fbbf24;
+        }
+    }
+</style>
+
+<div class="contact-submissions fade-in text-sm">
+    <h2><i class="fa-solid fa-envelope-open-text"></i> Contact Form Submissions</h2>
+    <table>
+        <thead>
+            <tr>
+                <th><i class="fa-solid fa-user"></i> Name</th>
+                <th><i class="fa-solid fa-at"></i> Email</th>
+                <th><i class="fa-solid fa-tag"></i> Subject</th>
+                <th><i class="fa-solid fa-comment"></i> Message</th>
+                <th><i class="fa-solid fa-calendar"></i> Date</th>
+                <th><i class="fa-solid fa-reply"></i> Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for msg in contact_messages %}
+            <tr>
+                <td data-label="Name">
+                    <div class="icon-text">
+                        <i class="fa-solid fa-user"></i> {{ msg.name }}
+                    </div>
+                </td>
+                <td data-label="Email">
+                    <div class="icon-text">
+                        <i class="fa-solid fa-envelope"></i> {{ msg.email }}
+                    </div>
+                </td>
+                  <td data-label="Subject">
+                    <div class="icon-text">
+                        {{ msg.subject }}
+                    </div>
+                </td>
+               
+                <td data-label="Message">{{ msg.message }}</td>
+                <td data-label="Date">
+                    <div class="icon-text">
+                        <i class="fa-solid fa-clock"></i> {{ msg.date_sent|date:"M d, Y H:i" }}
+                    </div>
+                </td>
+                <td data-label="Action">
+                    <a href="{% url 'respond_contact' msg.id %}" 
+                       class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition">
+                       Respond
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="empty-msg">
+                    <i class="fa-solid fa-circle-info"></i> No messages found
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock content %}
